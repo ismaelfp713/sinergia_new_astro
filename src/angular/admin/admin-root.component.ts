@@ -215,7 +215,7 @@ export class AdminRootComponent {
   }
 
   navClass(key: SectionKey): string {
-    return this.icons[key] ?? 'fa-circle';
+    return 'fa w-5 text-center ' + (this.icons[key] ?? 'fa-circle');
   }
 
   navLabel(key: SectionKey): string {
