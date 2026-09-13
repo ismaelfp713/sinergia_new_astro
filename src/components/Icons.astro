@@ -1,0 +1,19 @@
+---
+import { resolveIcon } from '../lib/icon-paths';
+
+interface Props {
+  name: string;
+  className?: string;
+}
+
+const { name, className = 'h-5 w-5' } = Astro.props;
+const icon = resolveIcon(name);
+---
+
+{
+  icon && (
+    <svg class={className} viewBox={icon.viewBox.join(' ')} fill="currentColor" aria-hidden="true">
+      {icon.paths.map((d) => <path d={d} />)}
+    </svg>
+  )
+}

@@ -1,0 +1,76 @@
+---
+import Icons from './Icons.astro';
+import type { Settings } from '../lib/site-content';
+
+interface Props {
+  settings?: Settings;
+}
+
+const { settings } = Astro.props;
+const logo = settings?.logo || '/img/logo2.jpg';
+
+const links = [
+  { href: '#intro', label: 'Inicio' },
+  { href: '#about', label: 'Sobre Nosotros' },
+  { href: '#services', label: 'Servicios' },
+  { href: '#portfolio', label: 'Portafolio' },
+  { href: '#team', label: 'Nuestro Equipo' },
+  { href: '#contact', label: 'Contactarnos' },
+];
+---
+
+<header
+  id="header"
+  class:list={[
+    'fixed inset-x-0 top-0 z-[997] bg-white py-5 shadow-[0_0_30px_rgba(127,137,161,0.3)] transition-all duration-500',
+  ]}
+>
+  <div class="container-x flex items-center justify-between">
+    <a href="#intro" class="scrollto">
+      <img src={logo} alt="Sinergia Ocupacional" class="h-[50px] max-h-[50px]" />
+    </a>
+
+    <span class="sr-only" id="mobile-nav-toggle-label">Menú</span>
+    <button
+      id="mobile-nav-toggle"
+      class="text-navy hover:text-primary lg:hidden"
+      aria-label="Abrir menú"
+      aria-controls="mobile-nav"
+      aria-expanded="false"
+    >
+      <Icons name="menu" className="h-7 w-7" />
+    </button>
+
+    <nav class="hidden lg:block" aria-label="Principal">
+      <ul class="flex items-center">
+        {
+          links.map((link) => (
+            <li>
+              <a href={link.href} class="scrollto px-[15px] py-2.5 font-body text-navy transition-colors duration-300 hover:text-primary">
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+
+  <nav
+    id="mobile-nav"
+    class="hidden border-t border-gray-100 bg-white shadow-md lg:hidden"
+    aria-label="Menú móvil"
+  >
+    <ul class="container-x flex flex-col py-2">
+      {
+        links.map((link) => (
+          <li>
+            <a href={link.href} class="scrollto block px-4 py-2.5 text-navy hover:text-primary">
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</header>

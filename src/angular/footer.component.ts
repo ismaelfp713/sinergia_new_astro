@@ -1,0 +1,95 @@
+import { Component, input } from '@angular/core';
+import { AppIconComponent } from './app-icon.component';
+import type { Settings } from '../lib/site-content';
+
+const QUICK_LINKS = [
+  { href: '#intro', label: 'Inicio' },
+  { href: '#about', label: 'Sobre Nosotros' },
+  { href: '#services', label: 'Servicios' },
+];
+
+const SOCIALS = [
+  { key: 'facebook', label: 'Facebook', href: 'https://www.facebook.com/Sinergia-Ocupacional-1433001093605899/' },
+  { key: 'instagram', label: 'Instagram', href: '' },
+  { key: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/in/gerardo-garcia-50ba9522/' },
+];
+
+@Component({
+  selector: 'app-footer',
+  standalone: true,
+  imports: [AppIconComponent],
+  template: `
+    <footer id="footer" class="bg-primary pb-[30px] text-[14px] text-[#eee]">
+      <div class="pt-[60px] pb-[30px]">
+        <div class="container-x">
+          <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-12">
+            <div class="footer-info lg:col-span-5">
+              <h3 class="mb-5 text-[34px] font-normal tracking-[3px] text-white">SINERGIA ocupacional</h3>
+            </div>
+
+            <div class="footer-links lg:col-span-4">
+              <h4 class="mb-[10px] pb-[10px] text-[14px] font-bold text-white">Acceso Rapido</h4>
+              <ul class="m-0 list-none p-0">
+                @for (link of QUICK_LINKS; track link.href) {
+                  <li class="py-2 first:pt-0">
+                    <a [href]="link.href" class="text-soft transition-colors hover:text-sky">
+                      {{ link.label }}
+                    </a>
+                  </li>
+                }
+              </ul>
+            </div>
+
+            <div class="footer-contact lg:col-span-3">
+              <h4 class="mb-[10px] pb-[10px] text-[14px] font-bold text-white">Contactarnos</h4>
+              <p class="mb-4 leading-[26px]">
+                Juárez Nte. #1335
+                <br />Zona Centro, Reynosa
+                <br />Tamaulipas, Mexico C.P. 88500
+                <br />
+                <strong>Telefono:</strong> {{ settings().phone1 }}, {{ settings().phone2 }},
+                <br />
+                <strong>Celular:</strong> {{ settings().phone3 }}
+                <br />
+                <strong>Email:</strong>&nbsp;
+                <a [href]="'mailto:' + settings().email" class="text-soft hover:text-sky">
+                  {{ settings().email }}
+                </a>
+                <br />
+              </p>
+
+              <div class="flex items-center gap-2">
+                @for (social of SOCIALS; track social.key) {
+                  @if (social.href) {
+                    <a
+                      [href]="social.href"
+                      [attr.aria-label]="social.label"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-block rounded-full p-2 text-white transition-colors duration-300 hover:bg-primary-darker"
+                    >
+                      <app-icon [name]="social.key" iconClass="h-[18px] w-[18px]" />
+                    </a>
+                  }
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container-x">
+        <div class="pt-[30px] text-center">
+          <p>
+            &copy; Copyright <strong>SINERGIA Ocupacional</strong>. Derechos Resevardos
+          </p>
+        </div>
+      </div>
+    </footer>
+  `,
+})
+export class AppFooterComponent {
+  readonly QUICK_LINKS = QUICK_LINKS;
+  readonly SOCIALS = SOCIALS;
+
+  settings = input<Settings>({} as Settings);
+}

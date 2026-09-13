@@ -1,0 +1,82 @@
+---
+import Icons from './Icons.astro';
+import type { WhyCard, Counter } from '../lib/site-content';
+
+interface Props {
+  whyCards: WhyCard[];
+  counters: Counter[];
+}
+
+const { whyCards, counters } = Astro.props;
+---
+
+<section id="why-us" class="section-pad bg-primary">
+  <div class="container-x">
+    <header class="section-header wow wow-fade-up">
+      <h3 class="text-white">Porque elegirnos?</h3>
+    </header>
+
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-4">
+      {
+        whyCards.map((card, index) => (
+          <div
+            class:list={[
+              'group rounded-[10px] bg-primary-dark px-3 py-[15px] text-center text-white transition-colors duration-300 ease-in-out hover:bg-primary-darker',
+              'wow wow-bounce-in-up',
+            ]}
+            style={`animation-delay: ${index * 0.15}s`}
+          >
+            <div class="pt-[15px] text-breath">
+              <Icons name={card.icon} className="mx-auto h-12 w-12 text-[48px] text-[#bfddfe]" />
+            </div>
+            <div
+              class="carousel relative mt-3"
+              data-carousel
+              data-autoplay="8000"
+            >
+              <div class="carousel-inner flex min-h-[150px] flex-col justify-center">
+                {
+                  card.items.map((item, index) => (
+                    <p class:list={['carousel-item text-[15px] leading-relaxed text-breath', index === 0 && 'active']}>
+                      {item}
+                    </p>
+                  ))
+                }
+              </div>
+              <button
+                data-carousel-prev
+                aria-label="Anterior"
+                class="absolute left-[-6px] top-1/2 -translate-y-1/2 text-[#74b5fc] transition-colors hover:text-white"
+              >
+                <Icons name="chevron-left" className="h-6 w-6" />
+              </button>
+              <button
+                data-carousel-next
+                aria-label="Siguiente"
+                class="absolute right-[-6px] top-1/2 -translate-y-1/2 text-[#74b5fc] transition-colors hover:text-white"
+              >
+                <Icons name="chevron-right" className="h-6 w-6" />
+              </button>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="grid grid-cols-2 gap-y-10 pt-[40px] text-center lg:grid-cols-4">
+      {
+        counters.map((counter) => (
+          <div>
+            <span
+              data-counter-value={counter.value}
+              class="block text-[40px] font-bold text-white md:text-[48px]"
+            >
+              {counter.value}
+            </span>
+            <p class="mx-0 mb-5 mt-0 font-display text-[14px] text-pale">{counter.label}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,17 +1,30 @@
 ---
+import Layout from '../layouts/Layout.astro';
+import { loadSiteContent } from '../lib/content';
+import { AppRootComponent } from '../angular/app-root.component';
 
+const content = await loadSiteContent();
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout
+  favicon={content.settings.favicon}
+  appleIcon={content.settings.logo}
+>
+  <AppRootComponent client:only="angular">
+    <header id="header" class="fixed inset-x-0 top-0 z-[997] bg-white py-5">
+      <div class="container-x flex items-center justify-between">
+        <a href="#intro">
+          <img src={content.settings.logo} alt="Sinergia Ocupacional" class="h-[50px] max-h-[50px]" />
+        </a>
+      </div>
+    </header>
+    <main>
+      <section class="relative w-full bg-cover bg-center bg-bottom" style={`background-image: url('${content.settings.heroBg}')`}>
+        <div class="container-x flex flex-col items-center pt-[100px] pb-[20px] text-center md:pt-[140px] lg:pt-[200px] lg:pb-[120px]">
+          <h2 class="mb-10 text-[34px] font-bold text-white md:text-[48px]">SINERGIA ocupacional</h2>
+          <p class="text-[20px] text-white">Cargando contenido…</p>
+        </div>
+      </section>
+    </main>
+  </AppRootComponent>
+</Layout>

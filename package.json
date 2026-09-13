@@ -9,12 +9,38 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check": "astro check",
+    "seed": "tsx scripts/seed-pocketbase.ts",
+    "download:assets": "bash scripts/download-assets.sh"
   },
   "dependencies": {
-    "astro": "^7.3.2"
+    "@analogjs/astro-angular": "2.7.2",
+    "@angular/animations": "20.3.31",
+    "@angular/build": "20.3.31",
+    "@angular/common": "20.3.31",
+    "@angular/compiler": "20.3.31",
+    "@angular/compiler-cli": "20.3.31",
+    "@angular/core": "20.3.31",
+    "@angular/language-service": "20.3.31",
+    "@angular/platform-browser": "20.3.31",
+    "@angular/platform-browser-dynamic": "20.3.31",
+    "@angular/platform-server": "20.3.31",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.3.2",
+    "pocketbase": "^0.28.1",
+    "rxjs": "7.8.1",
+    "tailwindcss": "^4.3.3",
+    "tslib": "2.8.1",
+    "zone.js": "0.15.1"
   },
   "allowScripts": {
     "esbuild": true
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@types/node": "^22.20.2",
+    "tsx": "^4.23.13",
+    "typescript": "5.9.3"
   }
 }
