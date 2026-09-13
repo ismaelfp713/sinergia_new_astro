@@ -144,7 +144,7 @@ export class PbService {
       id: this.str(r, 'id') || String(i),
       icon: this.str(r, 'icon') || fb[i]?.icon || 'clipboard',
       title: this.clean(this.str(r, 'title')),
-      description: this.clean(this.str(r, 'description')),
+      description: this.str(r, 'description'),
     }));
   }
 
@@ -171,7 +171,9 @@ export class PbService {
     return records.map((r, i) => ({
       id: this.str(r, 'id') || String(i),
       title: this.clean(this.str(r, 'title')),
-      description: this.clean(this.str(r, 'description')),
+      caption: this.str(r, 'caption'),
+      description: this.str(r, 'description'),
+      characteristics: this.str(r, 'characteristics'),
       image: this.fileUrl(r, this.str(r, 'image')) || fb[i]?.image || '/images/forklift.jpg',
     }));
   }

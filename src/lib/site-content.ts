@@ -49,7 +49,9 @@ export interface Counter {
 export interface Course {
   id: string;
   title: string;
+  caption: string;
   description: string;
+  characteristics: string;
   image: string;
 }
 
@@ -220,37 +222,49 @@ export const fallbackContent: SiteContent = {
     {
       id: 'montacargas',
       title: 'Montacargas',
+      caption: '',
       description: '3 niveles (principiante, intermedio y avanzado)',
+      characteristics: '',
       image: '/images/forklift.jpg',
     },
     {
       id: 'autoliderazgo-1',
       title: 'Autoliderazgo en Seguridad para CSH Parte 1',
+      caption: '',
       description: 'Herramientas de Liderazgo, Equipo y Comunicación',
+      characteristics: '',
       image: '/images/autoliderazgo.jpg',
     },
     {
       id: 'autoliderazgo-2',
       title: 'Autoliderazgo en Seguridad para CSH Parte 2',
+      caption: '',
       description: 'Mapa de Riesgos e Investigación Accidentes',
+      characteristics: '',
       image: '/images/part2.jpg',
     },
     {
       id: 'csh',
       title: 'Formación y Funciones de la CSH',
+      caption: '',
       description: 'Comisión de Seguridad e Higiene',
+      characteristics: '',
       image: '/images/comision.png',
     },
     {
       id: 'supervisores',
       title: 'Autoliderazgo en Seguridad para Supervisores',
+      caption: '',
       description: 'compromiso y conciencia',
+      characteristics: '',
       image: '/images/supervision.png',
     },
     {
       id: 'pnl',
       title: 'Herramientas de PNL para Servicio al Cliente.',
+      caption: '',
       description: 'Herramientas de Programación Neurolingüística',
+      characteristics: '',
       image: '/images/pnl.jpg',
     },
   ],

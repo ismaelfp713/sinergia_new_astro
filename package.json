@@ -12,6 +12,7 @@
     "astro": "astro",
     "check": "astro check",
     "seed": "tsx scripts/seed-pocketbase.ts",
+    "setup:panel": "tsx scripts/setup-panel.ts",
     "download:assets": "bash scripts/download-assets.sh"
   },
   "dependencies": {
@@ -22,6 +23,7 @@
     "@angular/compiler": "20.3.31",
     "@angular/compiler-cli": "20.3.31",
     "@angular/core": "20.3.31",
+    "@angular/forms": "^20.3.31",
     "@angular/language-service": "20.3.31",
     "@angular/platform-browser": "20.3.31",
     "@angular/platform-browser-dynamic": "20.3.31",

@@ -1,0 +1,19 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { AdminRootComponent } from '../angular/admin/admin-root.component';
+---
+
+<Layout
+  title="Panel de administración | SINERGIA Ocupacional"
+  description="Panel de administración del contenido del sitio."
+  noindex
+>
+  <AdminRootComponent client:only="angular">
+    <div class="flex min-h-screen items-center justify-center bg-slate-100">
+      <div class="text-center">
+        <i class="fa fa-refresh fa-spin text-3xl text-primary" aria-hidden="true"></i>
+        <p class="mt-3 text-[14px] text-slate-500">Cargando panel…</p>
+      </div>
+    </div>
+  </AdminRootComponent>
+</Layout>

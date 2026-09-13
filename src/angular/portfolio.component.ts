@@ -23,7 +23,7 @@ import type { Course } from '../lib/site-content';
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           @for (course of courses(); track course.id; let i = $index) {
             <div class="portfolio-item text-center wow wow-fade-up" [style.animation-delay]="(i % 3) * 0.15 + 's'">
-              <a [href]="'/curso/' + slugify(course.title)" class="block">
+              <a [href]="'/#/curso/' + slugify(course.title)" class="block">
                 <div class="group relative block overflow-hidden">
                   <img [src]="course.image" [alt]="course.title" loading="lazy" class="h-[10em] w-full object-cover" />
                   <div class="absolute inset-0 flex items-center justify-center bg-[rgba(254,209,54,0.9)] text-white opacity-0 transition-opacity duration-500 group-hover:opacity-100">
@@ -32,7 +32,10 @@ import type { Course } from '../lib/site-content';
                 </div>
                 <div class="mx-auto max-w-[400px] bg-white p-[25px] text-center">
                   <h4 class="mb-1 text-[18px] font-semibold text-ink">{{ course.title }}</h4>
-                  <p class="mb-0 text-[16px] italic text-muted">{{ course.description }}</p>
+                  @if (course.caption) {
+                    <p class="mb-1 text-[14px] italic text-primary" [innerHTML]="course.caption"></p>
+                  }
+                  <p class="rich-text mb-0 text-[16px] italic text-muted" [innerHTML]="course.description"></p>
                 </div>
               </a>
             </div>

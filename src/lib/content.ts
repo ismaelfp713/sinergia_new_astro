@@ -153,7 +153,9 @@ async function loadCourses(pb: PocketBase): Promise<Course[]> {
     return records.map((r, i) => ({
       id: (r.id as string) || String(i),
       title: cleanText(r.title as string),
-      description: cleanText(r.description as string),
+      caption: r.caption as string,
+      description: r.description as string,
+      characteristics: r.characteristics as string,
       image: resolveURL(pb, r, 'image', fallbackContent.courses[i]?.image || '/images/forklift.jpg'),
     }));
   } catch {

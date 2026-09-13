@@ -57,10 +57,8 @@ const SECTIONS = ['intro', 'about', 'services', 'portfolio', 'team', 'contact'];
             }
             <li>
               <a
-                href="https://admin.sinergiaocupacional.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Administrar los datos"
+                href="/admin"
+                title="Panel de administración"
                 aria-label="Iniciar sesión y administrar los datos"
                 class="ml-[15px] inline-flex items-center gap-2 rounded-full border-2 border-primary px-4 py-2 font-body text-[13px] font-semibold text-primary transition-colors duration-300 hover:bg-primary hover:text-white"
               >
@@ -91,9 +89,7 @@ const SECTIONS = ['intro', 'about', 'services', 'portfolio', 'team', 'contact'];
           }
           <li>
             <a
-              href="https://admin.sinergiaocupacional.com"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/admin"
               class="flex items-center gap-2 px-4 py-2.5 font-semibold text-primary hover:text-primary-dark"
               (click)="closeMobile()"
             >

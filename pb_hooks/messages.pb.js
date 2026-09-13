@@ -4,8 +4,25 @@
 // Coloca este archivo en el directorio pb_hooks/ de tu instancia PocketBase
 // (junto a pb_data/). El servidor lo recarga automáticamente.
 //
-// Destinatarios del correo (edítalos si cambian):
-const CONTACT_RECIPIENTS = ["info@sinergiaocupacional.com"];
+// Destinatarios: se toman del campo `email` de la colección "settings"
+// (el mismo que se edita desde el panel de administración). Si está vacío,
+// se usa la lista de respaldo de abajo.
+const CONTACT_RECIPIENTS_FALLBACK = ["info@sinergiaocupacional.com"];
+
+function contactRecipients(app) {
+  try {
+    const rec = app.dao().findFirstRecordByFilter("settings", "email != ''");
+    const raw = String((rec && rec.get("email")) || '').trim();
+    if (!raw) return CONTACT_RECIPIENTS_FALLBACK.slice();
+    return raw
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+  } catch (err) {
+    console.error("Contact email: no se pudo leer settings para destinatarios:", err);
+    return CONTACT_RECIPIENTS_FALLBACK.slice();
+  }
+}
 
 function escHtml(value) {
   return String(value)
@@ -23,6 +40,8 @@ onRecordAfterCreateRequest((e) => {
   const subject = String(record.get("subject") || "");
   const message = String(record.get("message") || "");
 
+  const recipients = contactRecipients(e.app);
+
   const html =
     "<h3>Nuevo mensaje desde el formulario de contacto</h3>" +
     "<p><strong>Nombre:</strong> " + escHtml(name) + "</p>" +
@@ -35,7 +54,7 @@ onRecordAfterCreateRequest((e) => {
       address: e.app.settings().meta.senderAddress,
       name: e.app.settings().meta.senderName,
     },
-    to: CONTACT_RECIPIENTS.map((address) => ({ address })),
+    to: recipients.map((address) => ({ address })),
     subject: "Nuevo mensaje de contacto" + (subject ? ": " + subject : ""),
     html,
   });
@@ -44,7 +63,7 @@ onRecordAfterCreateRequest((e) => {
     .newMailClient()
     .send(mail)
     .then(() => {
-      console.log("Contact email sent for record " + record.id);
+      console.log("Contact email sent to " + recipients.join(", ") + " for record " + record.id);
     })
     .catch((err) => {
       console.error("Contact email sending failed for record " + record.id + ":", err);

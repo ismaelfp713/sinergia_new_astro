@@ -34,7 +34,7 @@ import type { Service } from '../lib/site-content';
                     <h4 class="mb-[15px] text-[18px] font-bold text-[#111] transition-colors duration-300 group-hover:text-primary">
                       {{ service.title }}
                     </h4>
-                    <p class="text-[14px] leading-6">{{ service.description }}</p>
+                    <div class="rich-text text-[14px] leading-6" [innerHTML]="service.description"></div>
                   </div>
                 </div>
               </div>
