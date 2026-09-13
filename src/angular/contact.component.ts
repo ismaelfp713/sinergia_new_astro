@@ -1,4 +1,5 @@
 import { Component, HostListener, inject, input, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import type { SafeResourceUrl } from '@angular/platform-browser';
 import { AppIconComponent } from './app-icon.component';
@@ -31,7 +32,7 @@ const POLICY_ITEMS = [
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [AppIconComponent, AppWowDirective],
+  imports: [AppIconComponent, AppWowDirective, FormsModule],
   template: `
     <section id="contact" class="section-pad overflow-hidden shadow-[0_0_12px_rgba(0,0,0,0.1)]">
       <div class="w-full px-[15px]">
@@ -236,7 +237,7 @@ export class AppContactComponent {
   settings = input<Settings>({} as Settings);
 
   readonly POLICY_ITEMS = POLICY_ITEMS;
-  readonly url: string | undefined = import.meta.env.PUBLIC_POCKETBASE_URL;
+  readonly url: string = (import.meta.env.PUBLIC_POCKETBASE_URL ?? '').replace(/\/+$/, '');
 
   modalOpen = signal(false);
   policyChecked = signal(false);

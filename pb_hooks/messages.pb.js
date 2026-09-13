@@ -7,6 +7,10 @@
 // Destinatarios: se toman del campo `email` de la colección "settings"
 // (el mismo que se edita desde el panel de administración). Si está vacío,
 // se usa la lista de respaldo de abajo.
+//
+// IMPORTANTE: este hook NUNCA debe fallar la creación del registro. Cualquier
+// error de lectura de settings, construcción del correo o envío SMTP se
+// registra en el stdout de PocketBase pero el registro siempre se guarda.
 const CONTACT_RECIPIENTS_FALLBACK = ["info@sinergiaocupacional.com"];
 
 function contactRecipients(app) {
@@ -34,39 +38,50 @@ function escHtml(value) {
 }
 
 onRecordAfterCreateRequest((e) => {
-  const record = e.record;
-  const name = String(record.get("name") || "");
-  const email = String(record.get("email") || "");
-  const subject = String(record.get("subject") || "");
-  const message = String(record.get("message") || "");
+  try {
+    const record = e.record;
+    const name = String(record.get("name") || "");
+    const email = String(record.get("email") || "");
+    const subject = String(record.get("subject") || "");
+    const message = String(record.get("message") || "");
 
-  const recipients = contactRecipients(e.app);
+    const recipients = contactRecipients(e.app).filter((a) => /@/.test(a));
 
-  const html =
-    "<h3>Nuevo mensaje desde el formulario de contacto</h3>" +
-    "<p><strong>Nombre:</strong> " + escHtml(name) + "</p>" +
-    "<p><strong>Email:</strong> " + escHtml(email) + "</p>" +
-    "<p><strong>Tema:</strong> " + escHtml(subject) + "</p>" +
-    "<p><strong>Mensaje:</strong><br>" + escHtml(message).replace(/\n/g, "<br>") + "</p>";
+    const html =
+      "<h3>Nuevo mensaje desde el formulario de contacto</h3>" +
+      "<p><strong>Nombre:</strong> " + escHtml(name) + "</p>" +
+      "<p><strong>Email:</strong> " + escHtml(email) + "</p>" +
+      "<p><strong>Tema:</strong> " + escHtml(subject) + "</p>" +
+      "<p><strong>Mensaje:</strong><br>" + escHtml(message).replace(/\n/g, "<br>") + "</p>";
 
-  const mail = new MailerMessage({
-    from: {
-      address: e.app.settings().meta.senderAddress,
-      name: e.app.settings().meta.senderName,
-    },
-    to: recipients.map((address) => ({ address })),
-    subject: "Nuevo mensaje de contacto" + (subject ? ": " + subject : ""),
-    html,
-  });
+    const settings = e.app.settings();
+    const from = {
+      address: settings.meta.senderAddress,
+      name: settings.meta.senderName,
+    };
 
-  return e.app
-    .newMailClient()
-    .send(mail)
-    .then(() => {
-      console.log("Contact email sent to " + recipients.join(", ") + " for record " + record.id);
-    })
-    .catch((err) => {
-      console.error("Contact email sending failed for record " + record.id + ":", err);
-      return null;
-    });
+    const sendMail = function () {
+      const mail = new MailerMessage({
+        from,
+        to: recipients.map((address) => ({ address })),
+        subject: "Nuevo mensaje de contacto" + (subject ? ": " + subject : ""),
+        html,
+      });
+      return e.app
+        .newMailClient()
+        .send(mail)
+        .then(() => {
+          console.log("Contact email sent to " + recipients.join(", ") + " for record " + record.id);
+        })
+        .catch((err) => {
+          console.error("Contact email sending failed for record " + record.id + ":", err);
+          return null;
+        });
+    };
+
+    return sendMail();
+  } catch (err) {
+    console.error("Contact email: error en el hook (la creación del registro no se afecta):", err);
+    return null;
+  }
 }, "messages");
